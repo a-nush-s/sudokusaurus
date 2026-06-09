@@ -1,0 +1,140 @@
+body{
+    font-family:'Courier New', Courier, monospace;
+    text-align: center;
+    background-color:#FFFFEBFF;
+}
+
+#logo {
+    display: block;
+    margin: 0 auto;
+}
+
+.game-area {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.board-wrap {
+    position: relative;
+}
+
+#board{
+    width: 510px;
+    height: 510px;
+    position: relative;
+    z-index: 2;
+}
+
+.numbers {
+    display: grid;
+    grid-template-columns: repeat(3, 64px);
+    grid-auto-rows: 64px;
+    margin-top: -45px;
+}
+
+.numbers img {
+    width: 64px;
+    height: 64px;
+    display: none;
+}
+
+#num1, #num2, #num3, #num4, #num5, #num6, #num7, #num8, #num9, #blank {
+    display: block;
+    padding-left: 64px;
+    padding-top: 64px;
+    cursor: pointer;
+}
+
+#blank {
+    grid-column: 2;
+}
+
+@keyframes hide {
+    to { opacity: 0; }
+}
+
+@keyframes show {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+#tosleep {
+    position: absolute;
+    width: 585px;
+    height: 272px;
+    right: -353px;
+    bottom: -42px;
+    z-index: 1;
+}
+
+#walkingdone {
+    position: absolute;
+    width: 585px;
+    height: 272px;
+    right: -353px;
+    bottom: -42px;
+    z-index: 1;
+    opacity: 0;
+}
+
+#eating{
+    display: none;
+}
+
+#difficulty-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #FFFFEBFF;
+}
+
+#difficulty-screen #logo {
+    margin-top: 20px;
+}
+
+#difficulty-wrap {
+    position: relative;
+    display: inline-block;
+    margin: auto;
+}
+
+#selectdifficulty {
+    display: block;
+}
+
+#easy-btn, #medium-btn, #hard-btn, #expert-btn {
+    position: absolute;
+    cursor: pointer;
+}
+
+#easy-btn {
+    top: 144px;
+    left: 136px;
+    transform: translate(-50%, -50%);
+}
+
+#medium-btn {
+    top: 144px;
+    left: 410px;
+    transform: translate(-50%, -50%);
+}
+
+#hard-btn {
+    top: 240px;
+    left: 148px;
+    transform: translate(-50%, -50%);
+}
+
+#expert-btn {
+    top: 240px;
+    left: 420px;
+    transform: translate(-50%, -50%);
+}
