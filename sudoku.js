@@ -219,8 +219,7 @@ function checkCompletion() {
     const btn = document.getElementById('result-btn');
     overlay.src = correct ? 'assets/youwin.png' : 'assets/notquite.png';
     btn.src = correct ? 'assets/newgame.png' : 'assets/keeptrying.png';
-    overlay.style.display = 'block';
-    btn.style.display = 'block';
+    document.getElementById('result-wrap').style.display = 'flex';
 }
 
 function removeRandomPlayerCell() {
@@ -323,8 +322,7 @@ function renderBoard(grid) {
 
 function startGame(toRem, delay) {
     document.getElementById('difficulty-screen').style.display = 'none';
-    document.getElementById('result-overlay').style.display = 'none';
-    document.getElementById('result-btn').style.display = 'none';
+    document.getElementById('result-wrap').style.display = 'none';
     removalDelay = delay;
 
     const tosleep = document.getElementById('tosleep');
@@ -348,8 +346,7 @@ window.addEventListener('DOMContentLoaded', function() {
     document.getElementById('result-btn').addEventListener('click', () => {
         const btn = document.getElementById('result-btn');
         if (btn.src.includes('newgame.png')) {
-            document.getElementById('result-overlay').style.display = 'none';
-            btn.style.display = 'none';
+            document.getElementById('result-wrap').style.display = 'none';
             clearTimeout(removalTimeout);
             removalTimeout = null;
             const tosleep = document.getElementById('tosleep');
@@ -362,8 +359,7 @@ window.addEventListener('DOMContentLoaded', function() {
             eating.style.display = 'none';
             document.getElementById('difficulty-screen').style.display = '';
         } else {
-            document.getElementById('result-overlay').style.display = 'none';
-            btn.style.display = 'none';
+            document.getElementById('result-wrap').style.display = 'none';
             document.getElementById('eating').style.display = 'none';
             const walkingdone = document.getElementById('walkingdone');
             const tosleep = document.getElementById('tosleep');
@@ -374,7 +370,7 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementById('easy-btn').addEventListener('click',   () => startGame(42, 30000));
+    document.getElementById('easy-btn').addEventListener('click',   () => startGame(1, 30000));
     document.getElementById('medium-btn').addEventListener('click', () => startGame(56, 25000));
     document.getElementById('hard-btn').addEventListener('click',   () => startGame(56, 20000));
     document.getElementById('expert-btn').addEventListener('click', () => startGame(58, 15000));
