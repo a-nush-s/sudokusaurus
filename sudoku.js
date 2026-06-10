@@ -95,41 +95,58 @@ function buildBoard(grid){
     }
 }
 
-function solveGrid(grid){
+function hasUniqueSolution(grid){
     const board = grid.map(row => [...row]);
-    return backtrack(board);
+    const count = countSolutions(board, 0);
+    return count === 1;
 }
 
-function backtrack(board){
+function countSolutions(board, count){
+    //pick the empty cell with the fewest legal candidates (MRV heuristic)
+    //this drastically cuts branching on sparse boards vs. always picking the first empty cell
+    let bestRow = -1, bestCol = -1, bestCandidates = null;
     for (let i = 0; i < 81; i++){
         const row = Math.floor(i / 9);
         const col = i % 9;
         if (board[row][col] !== 0) continue;
+        const candidates = [];
         for (let val = 1; val <= 9; val++){
-            if (placementCheck(board, row, col, val)){
-                board[row][col] = val;
-                if (backtrack(board)) return true;
-                board[row][col] = 0;
-            }
+            if (placementCheck(board, row, col, val)) candidates.push(val);
         }
-        return false;
+        if (candidates.length === 0) return count; //dead end, no solutions down this path
+        if (bestCandidates === null || candidates.length < bestCandidates.length){
+            bestCandidates = candidates;
+            bestRow = row;
+            bestCol = col;
+            if (candidates.length === 1) break; //can't do better than a single candidate
+        }
     }
-    return true;
+    if (bestRow === -1) return count + 1; //no empty cells left, found a solution
+    for (const val of bestCandidates){
+        board[bestRow][bestCol] = val;
+        count = countSolutions(board, count);
+        board[bestRow][bestCol] = 0;
+        if (count >= 2) return count; //stop early once more than one solution is found
+    }
+    return count;
 }
 
 function pokeHoles(grid, toRemove){
-    for (let i = 0; i < toRemove; i++){ //toRemove is based on the difficulty selected and represents number of holes to poke
+    let attempts = 0;
+    const maxAttempts = toRemove * 20; //bail out if we can't reach toRemove without breaking uniqueness
+    for (let i = 0; i < toRemove && attempts < maxAttempts; i++){ //toRemove is based on the difficulty selected and represents number of holes to poke
         let random = Math.floor(Math.random() * 81); //pick a random square
         let row = Math.floor(random / 9);
         let col = random % 9;
         let val = grid[row][col];
         if (val === 0) { i--; continue; } //already empty, pick again
         grid[row][col] = 0; //poke the hole
-        if (solveGrid(grid)){ //try solving after the hole is poked
+        if (hasUniqueSolution(grid)){ //try solving after the hole is poked, ensuring still unique
             continue; //it worked, can continue
         } else {
             grid[row][col] = val; //put it back
             i--; //didn't work so no hole was added. decrement i to try again
+            attempts++;
         }
     }
     return;
@@ -359,8 +376,8 @@ window.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('easy-btn').addEventListener('click',   () => startGame(42, 30000));
     document.getElementById('medium-btn').addEventListener('click', () => startGame(56, 25000));
-    document.getElementById('hard-btn').addEventListener('click',   () => startGame(60, 20000));
-    document.getElementById('expert-btn').addEventListener('click', () => startGame(64, 15000));
+    document.getElementById('hard-btn').addEventListener('click',   () => startGame(56, 20000));
+    document.getElementById('expert-btn').addEventListener('click', () => startGame(58, 15000));
 
     const numPad = document.querySelector('.numbers');
     const numPadButtons = [
