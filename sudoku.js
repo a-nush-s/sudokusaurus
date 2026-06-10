@@ -370,7 +370,7 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementById('easy-btn').addEventListener('click',   () => startGame(1, 30000));
+    document.getElementById('easy-btn').addEventListener('click',   () => startGame(42, 30000));
     document.getElementById('medium-btn').addEventListener('click', () => startGame(56, 25000));
     document.getElementById('hard-btn').addEventListener('click',   () => startGame(56, 20000));
     document.getElementById('expert-btn').addEventListener('click', () => startGame(58, 15000));
